@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UskokWS", "UskokWS\UskokWS.csproj", "{D8F0F797-A6F4-4826-9703-57A1CEFBBE8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UskokWS.Debug", "UskokWS.Debug\UskokWS.Debug.csproj", "{DF87FF4C-A341-4F1A-9362-0780F39400E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8F0F797-A6F4-4826-9703-57A1CEFBBE8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F0F797-A6F4-4826-9703-57A1CEFBBE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F0F797-A6F4-4826-9703-57A1CEFBBE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F0F797-A6F4-4826-9703-57A1CEFBBE8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF87FF4C-A341-4F1A-9362-0780F39400E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF87FF4C-A341-4F1A-9362-0780F39400E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF87FF4C-A341-4F1A-9362-0780F39400E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF87FF4C-A341-4F1A-9362-0780F39400E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
