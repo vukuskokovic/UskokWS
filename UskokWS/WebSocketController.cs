@@ -20,6 +20,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
             ConnectionId = Guid.NewGuid(),
             Controller = this
         };
+        ConnectedSockets[Client.ConnectionId] = Client;
         await OnConnected(token);
         var closeStatus = WebSocketCloseStatus.NormalClosure;
         var stream = new MemoryStream();
@@ -27,7 +28,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
         {
             try
             {
-                byte[] buffer = new byte[5096];
+                var buffer = new byte[5096];
                 var receiveResult = await socket.ReceiveAsync(buffer, token);
                 
                 if (receiveResult.CloseStatus != null)
@@ -75,6 +76,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
             //
         }
 
+        ConnectedSockets.TryRemove(Client.ConnectionId, out _);
         await OnDisconnected(closeStatus);
     }
 
