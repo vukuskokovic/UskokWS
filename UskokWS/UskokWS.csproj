@@ -10,7 +10,9 @@
         <IsPackable>true</IsPackable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-        <Version>1.0.1</Version>
+        <Version>1.1.0</Version>
+        <PackageId>UskokWebSocket</PackageId>
+        <Authors>Vuk Uskokovic</Authors>
     </PropertyGroup>
 
 </Project>

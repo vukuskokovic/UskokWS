@@ -31,9 +31,9 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
                 var buffer = new byte[5096];
                 var receiveResult = await socket.ReceiveAsync(buffer, token);
                 
-                if (receiveResult.CloseStatus != null)
+                if (receiveResult.CloseStatus != null || receiveResult.MessageType == WebSocketMessageType.Close)
                 {
-                    closeStatus = receiveResult.CloseStatus.Value;
+                    closeStatus = receiveResult.CloseStatus ?? WebSocketCloseStatus.Empty;
                     break;
                 }
 
@@ -56,10 +56,18 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
                     }
                 }
             }
+            
+            
             catch (Exception ex)
             {
                 if (ex is TaskCanceledException)
                 {
+                    break;
+                }
+
+                if (ex is WebSocketException { WebSocketErrorCode: WebSocketError.InvalidState } or OperationCanceledException)
+                {
+                    closeStatus = WebSocketCloseStatus.Empty;
                     break;
                 }
 

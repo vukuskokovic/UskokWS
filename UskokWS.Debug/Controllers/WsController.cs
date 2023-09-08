@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace UskokWS.Debug.Controllers;
 
 [Route("ws")]
-public class WsController : WebSocketController<TestClient>
+public class WsController : WebSocketMessageTypeController<TestClient>
 {
     private ILogger<WsController> Logger { get; }
     public WsController(ILogger<WsController> logger)
@@ -24,15 +24,27 @@ public class WsController : WebSocketController<TestClient>
         return Task.CompletedTask;
     }
 
-    public override async Task OnMessage(MemoryStream stream, WebSocketMessageType type)
+    public override Task OnBinaryMessage(MemoryStream stream)
     {
-        await Task.Delay(3_000, Client.ClientCancellationToken);
-        Logger.LogInformation("{DidCancel}", Client.ClientCancellationToken.IsCancellationRequested);
+        Logger.LogInformation("Binary {Length}", stream.Length);
+        return Task.CompletedTask;
+    }
+
+    public override Task OnTextMessage(string text)
+    {
+        Logger.LogInformation("Text '{Text}'", text);
+        return Task.CompletedTask;
     }
 
     public override Task OnDisconnected(WebSocketCloseStatus status)
     {
         Logger.LogInformation("{Status}", status);
+        return Task.CompletedTask;
+    }
+
+    public override Task OnError(Exception ex)
+    {
+        Logger.LogError("{Ex}", ex.ToString());
         return Task.CompletedTask;
     }
 }
