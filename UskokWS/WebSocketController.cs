@@ -65,7 +65,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
                     break;
                 }
 
-                if (ex is WebSocketException { WebSocketErrorCode: WebSocketError.InvalidState } or OperationCanceledException)
+                if (ex is WebSocketException or OperationCanceledException or ObjectDisposedException)
                 {
                     closeStatus = WebSocketCloseStatus.Empty;
                     break;
