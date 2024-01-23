@@ -31,7 +31,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
                 var buffer = new byte[5096];
                 var receiveResult = await socket.ReceiveAsync(buffer, token);
                 
-                if (receiveResult.CloseStatus != null || receiveResult.MessageType == WebSocketMessageType.Close)
+                if (receiveResult.CloseStatus != null || receiveResult.MessageType == WebSocketMessageType.Close || socket.State != WebSocketState.Open)
                 {
                     closeStatus = receiveResult.CloseStatus ?? WebSocketCloseStatus.Empty;
                     break;

@@ -9,15 +9,26 @@ public abstract class WebSocketClient
     public CancellationToken ClientCancellationToken { get; internal init; }
     public IWebSocketController Controller { get; internal init; } = null!;
 
-    public Task Send(ArraySegment<byte> buffer, WebSocketMessageType type)
+    public async Task Send(ArraySegment<byte> buffer, WebSocketMessageType type)
     {
         try
         {
-            return Socket.SendAsync(buffer, type, true, ClientCancellationToken);
+            await Socket.SendAsync(buffer, type, true, ClientCancellationToken);
         }
         catch (Exception ex)
         {
-            return Controller.OnError(ex);
+            if(ex is WebSocketException { WebSocketErrorCode: WebSocketError.InvalidState })
+            {
+                try
+                {
+                    await Socket.CloseAsync(WebSocketCloseStatus.Empty, null, ClientCancellationToken);
+                }
+                catch
+                {
+                    //
+                }
+            }
+            await Controller.OnError(ex);
         }
     }
 }
