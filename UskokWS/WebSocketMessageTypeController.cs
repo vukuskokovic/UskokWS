@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -10,7 +11,8 @@ public abstract class WebSocketMessageTypeController<T> : WebSocketController<T>
     {
         Encoding = encoding ?? Encoding.UTF8;
     }
-    
+
+    [NonAction]
     public sealed override Task OnMessage(MemoryStream stream, WebSocketMessageType type)
     {
         if (type == WebSocketMessageType.Binary) return OnBinaryMessage(stream);
@@ -18,7 +20,8 @@ public abstract class WebSocketMessageTypeController<T> : WebSocketController<T>
         var text = Encoding.GetString(stream.GetBuffer(), 0, (int)stream.Length);
         return OnTextMessage(text);
     }
-
+    [NonAction]
     public virtual Task OnBinaryMessage(MemoryStream stream) => Task.CompletedTask;
+    [NonAction]
     public virtual Task OnTextMessage(string text) => Task.CompletedTask;
 }

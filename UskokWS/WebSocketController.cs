@@ -9,7 +9,8 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
 {
     public static readonly ConcurrentDictionary<Guid, T> ConnectedSockets = new();
     protected T Client { get; private set; } = null!;
-    
+
+    [NonAction]
     protected async Task HandleConnection(HttpContext context, CancellationToken token)
     {
         var socket = await context.WebSockets.AcceptWebSocketAsync();
@@ -37,7 +38,7 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
                     break;
                 }
 
-                await stream.WriteAsync(buffer, 0, receiveResult.Count, token);
+                await stream.WriteAsync(buffer.AsMemory(0, receiveResult.Count), token);
                 if (receiveResult.EndOfMessage)
                 {
                     try
@@ -88,25 +89,27 @@ public abstract class WebSocketController<T> : ControllerBase, IWebSocketControl
         await OnDisconnected(closeStatus);
     }
 
+    [NonAction]
     public virtual Task OnConnected(CancellationToken token)
     {
         return Task.CompletedTask;
     }
-
+    [NonAction]
     public virtual Task OnDisconnected(WebSocketCloseStatus status)
     {
         return Task.CompletedTask;
     }
-    
+    [NonAction]
     public virtual Task OnMessage(MemoryStream stream, WebSocketMessageType type)
     {
         return Task.CompletedTask;
     }
-    
+
     /// <summary>
     /// This method cannot fail!!!
     /// </summary>
     /// <param name="ex">The exception that occured</param>
+    [NonAction]
     public virtual Task OnError(Exception ex)
     {
         return Task.CompletedTask;
